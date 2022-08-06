@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql
+  namespace: mysql
+  labels:
+    app: mysql
+data:
+  master.cnf: |
+    # Master configuration
+    [mysqld]
+    log-bin
+  slave.cnf: |
+    # Slave configuration
+    [mysqld]
+    super-read-only
