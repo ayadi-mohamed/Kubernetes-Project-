@@ -73,14 +73,14 @@
 		vm1.vm.box = "centos/8"
 		vm1.vm.hostname = 'ansible1'
 		vm1.vm.box_url = "centos/8"
-		vm1.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)", auto_config: false
+		vm1.vm.network "public_network", bridge: "en0: Ethernet (AirPort)", auto_config: false
 	  end
- 	  config.vm.define "ansible2" do |vm2|
-    	 vm2.vm.box = "centos/8"
-	 	 vm2.vm.hostname = 'ansible2'
-      	 vm2.vm.box_url = "centos/8"
-		 vm2.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)", auto_config: false
-	end
+ 	  #config.vm.define "ansible2" do |vm2|
+    	# vm2.vm.box = "centos/8"
+	 	# vm2.vm.hostname = 'ansible2'
+      	# vm2.vm.box_url = "centos/8"
+		# vm2.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)", auto_config: false
+	#end
   end
 
 #end
