@@ -8,14 +8,14 @@ spec:
       app: mysql
       app.kubernetes.io/name: mysql
   serviceName: mysql
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
         app: mysql
         app.kubernetes.io/name: mysql
     spec:
-      initContainers:
+      containers:
       - name: init-mysql
         image: mysql:5.7
         command:
@@ -162,8 +162,10 @@ spec:
   - metadata:
       name: data
     spec:
-      storageClassName: ssd-disks
+      storageClassName: ssd-disk
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
-          storage: 10Gi
+          storage: 5Gi
+
+

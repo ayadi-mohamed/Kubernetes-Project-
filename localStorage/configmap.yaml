@@ -6,12 +6,12 @@ metadata:
   namespace: default 
 data:
   storageClassMap: |     
-    ssd-disks:
-       hostDir: /mnt/ssd-disks
-       mountDir: /mnt/ssd-disks 
+    ssd-disk:
+       hostDir: /mnt/ssd-disk
+       mountDir: /mnt/ssd-disk
        blockCleanerCommand:
          - "/scripts/shred.sh"
          - "2"
        volumeMode: Filesystem
-       fsType: xfs
+       fsType: ext4
        namePattern: "*"

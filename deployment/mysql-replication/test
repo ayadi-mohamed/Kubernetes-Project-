@@ -1,5 +1,0 @@
-10.0.66.74  == >  nvme1n1  === > /mnt/ssd-disks/8797....
-10.0.127.146 === ? /mnt/ssd-disks/b02d 
- mountDir :  where you mounted your disks
-  run daemonset in each node 
-

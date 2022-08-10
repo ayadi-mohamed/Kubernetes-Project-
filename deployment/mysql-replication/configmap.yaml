@@ -1,17 +1,19 @@
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mysql
-  namespace: mysql
   labels:
     app: mysql
+    app.kubernetes.io/name: mysql
 data:
-  master.cnf: |
-    # Master configuration
+  primary.cnf: |
+    # Apply this config only on the primary.
     [mysqld]
-    log-bin
-  slave.cnf: |
-    # Slave configuration
+    log-bin    
+    bind-address = 0.0.0.0
+  replica.cnf: |
+    # Apply this config only on replicas.
     [mysqld]
     super-read-only
+    bind-address = 0.0.0.0
+    
