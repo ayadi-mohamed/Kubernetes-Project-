@@ -15,13 +15,19 @@ spec:
         app: mysql
         app.kubernetes.io/name: mysql
     spec:
-      containers:
+      initContainers:
       - name: init-mysql
         image: mysql:5.7
         command:
         - bash
         - "-c"
         - |
+          echo 'search HOME' > /etc/resolv.conf
+          echo 'nameserver 192.168.100.1' >> /etc/resolv.conf
+          echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
+
+          yum update -y
+          yum -y install hostname
           set -ex
           # Generate mysql server-id from pod ordinal index.
           [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
@@ -46,17 +52,29 @@ spec:
         - bash
         - "-c"
         - |
+          echo 'search HOME' > /etc/resolv.conf
+          echo 'nameserver 192.168.100.1' >> /etc/resolv.conf
+          echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
+          
+          apt update -y
+          apt install -y mysql-server
+          service mysql status 
+          service mysql start
+          service mysql status
           set -ex
           # Skip the clone if data already exists.
           [[ -d /var/lib/mysql/mysql ]] && exit 0
           # Skip the clone on primary (ordinal index 0).
           [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
           ordinal=${BASH_REMATCH[1]}
-          [[ $ordinal -eq 0 ]] && exit 0
+          [[ $ordinal -eq 0 ]] && exit 0c
           # Clone data from previous peer.
           ncat --recv-only mysql-$(($ordinal-1)).mysql 3307 | xbstream -x -C /var/lib/mysql
           # Prepare the backup.
-          xtrabackup --prepare --target-dir=/var/lib/mysql          
+
+          xtrabackup --backup --target-dir=/var/lib/mysql/
+          xtrabackup --prepare --target-dir=/var/lib/mysql/
+
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql
