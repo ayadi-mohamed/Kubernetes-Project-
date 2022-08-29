@@ -1,0 +1,5 @@
+kubectl port-forward service/prestashop-service 8081:8081
+
+helm install mariadb --values test-mysql.yaml  --set primary.startupProbe.enabled=false --set primary.readinessProbe.enabled=false --set primary.livenessProbe.enabled=false --set secondary.startupProbe.enabled=false --set secondary.readinessProbe.enabled=false --set secondary.livenessProbe.enabled=false bitnami/mariadb
+
+sudo trace -eopenat kubectl version

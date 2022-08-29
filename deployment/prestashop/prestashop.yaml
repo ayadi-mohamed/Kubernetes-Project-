@@ -16,9 +16,12 @@ spec:
         spec:
             containers: 
             - name: prestashopcontainer
-              image: ayadinou/prestashopdclick:02
+              image: ayadinou/prestashopdclick:03
               ports:
               - containerPort: 80  
+              volumeMounts:
+              - name: nfs-vol
+                mountPath: /var/www/html
               env:
                 #              - name: PMA_CONTROLUSER
                 #                valueFrom:
@@ -46,6 +49,10 @@ spec:
                   configMapKeyRef:
                     name: mysql-configmap
                     key: database_url
+            volumes:
+            - name: nfs-vol
+              persistentVolumeClaim:
+                claimName: nfs-www-pvc
 ---
 apiVersion: v1
 kind: Service
