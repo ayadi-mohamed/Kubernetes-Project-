@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
     name: mysql-configmap
 data:
-    database_url: mariadb-primary-0.mariadb-primary
+    database_url: mysql-primary-0.mysql-primary-headless
