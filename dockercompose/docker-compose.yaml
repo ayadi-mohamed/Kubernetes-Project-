@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+    php-apache-environment1:
+        container_name: php-apache1
+        image: php-apache-custom        
+        volumes:
+            - ../sites/:/var/www/html/
+            - /etc/hosts:/etc/hosts
+        ports:
+            - 8000:80
+        networks:
+            - mineBridge5
+        depends_on:
+            - db-service
+    php-apache-environment2:
+        container_name: php-apache2
+        image: php-apache-custom        
+        volumes:
+            - ../sites/:/var/www/html/
+            - /etc/hosts:/etc/hosts
+        ports:
+            - 8001:80
+        networks:
+            - mineBridge5
+        depends_on:
+            - db-service
+    db-service:
+        #container_name: db-container
+        image: mysql
+        volumes:
+            - $PWD/mysql:/var/lib/mysql
+        ports:
+            - 3306:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=123
+            - MYSQL_PASSWORD=mohamed123
+            - MYSQL_USER=mohamed
+            - MYSQL_DATABASE=mydbfortesting
+        networks:
+            - mineBridge5
+networks:
+    mineBridge5:
+        driver: bridge
+

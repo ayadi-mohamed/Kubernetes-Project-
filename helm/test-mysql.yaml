@@ -1,0 +1,26 @@
+architecture: replication
+secondary:
+    replicaCount: 1
+    startupProbe:
+        enabled: false
+    readinessProbe:
+        enabled: false
+    livenessProbe:
+        enabled: false
+
+global:
+    storageClass: "managed-nfs-storage"
+auth:
+    rootPassword: "root"
+    replicationPassword: "replication"
+primary:
+    startupProbe:
+        enabled: false
+    readinessProbe:
+        enabled: false
+    livenessProbe:
+        enabled: false
+    nodeSelector: {node-name: mysql-primary}
+
+
+

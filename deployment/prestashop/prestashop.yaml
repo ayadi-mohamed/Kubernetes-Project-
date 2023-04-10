@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: prestashop
+    labels:
+        app: prestashop
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: prestashop
+    template:
+        metadata:
+            labels:
+                app: prestashop
+        spec:
+            containers: 
+            - name: prestashopcontainer
+              image: ayadinou/prestashopdclick:03
+              ports:
+              - containerPort: 80  
+              volumeMounts:
+              - name: nfs-vol
+                mountPath: /var/www/html
+              env:
+                #              - name: PMA_CONTROLUSER
+                #                valueFrom:
+                #                    secretKeyRef:
+                #                        name: mysql-secret
+                #                        key: phpmyadmin-controluser 
+                #              - name: PMA_CONTROLPASS
+                #                valueFrom:
+                #                    secretKeyRef:
+                #                        name: mysql-secret
+                #                        key: phpmyadmin-controlpass
+              - name: MYSQL_USER
+                value: root
+              - name: MYSQL_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mysql-secret
+                    key: mysql-root-password
+
+              - name: MYSQL_HOST
+                value: mysql-primary
+            volumes:
+            - name: nfs-vol
+              persistentVolumeClaim:
+                claimName: nfs-www-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: prestashop-service
+spec:
+    selector:
+        app: prestashop
+    ports:
+        - protocol: TCP
+          port: 8081
+          targetPort: 80
